@@ -46,7 +46,7 @@ st.markdown("""
         color: #111827 !important;
     }
     
-    /* Excepción para textos que deben ser blancos en headers */
+    /* Excepción para textos blancos en elementos específicos */
     .brand-name, .brand-subtitle, .top-strip, .vehicle-card *, .stButton button {
         color: white !important;
     }
@@ -212,7 +212,7 @@ def login_screen():
     if LOGO_FILE.exists():
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            st.image(str(LOGO_FILE), use_column_width=True)
+            st.image(str(LOGO_FILE), use_container_width=True)
 
     st.markdown("""
         <div class="executive-card">
@@ -345,7 +345,6 @@ def admin_dashboard():
     aprobados = sum(1 for r in registros if r.get("Estado") == "APROBADO")
     revision = sum(1 for r in registros if r.get("Estado") == "REQUIERE REVISIÓN")
 
-    # Métricas limpias aseguradas con CSS forzado
     c1, c2, c3 = st.columns(3)
     c1.metric("Total Inspecciones", total)
     c2.metric("Flota Operativa", aprobados)
@@ -356,7 +355,6 @@ def admin_dashboard():
     if registros:
         df = pd.DataFrame(registros)
         
-        # Botón de Descarga Excel corporativo
         csv = df.to_csv(index=False).encode('utf-8')
         st.download_button(
             label="📥 Descargar Reporte Completo en Excel (CSV)",
@@ -376,7 +374,6 @@ def admin_dashboard():
     else:
         st.info("Aún no hay inspecciones registradas en este turno. El panel se actualizará automáticamente cuando los conductores envíen sus reportes.")
 
-    # Fragmento en vivo seguro
     try:
         @st.fragment(run_every="3s")
         def actualizar_automatico():
